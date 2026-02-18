@@ -1,0 +1,46 @@
+---
+- name: Comprobar si K3s ya está instalado
+  ansible.builtin.stat:
+    path: /usr/local/bin/k3s
+  register: k3s_binary
+
+- name: Instalar K3s server
+  ansible.builtin.shell: |
+    curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="{{ k3s_version }}" sh -s - server \
+      --disable traefik \
+      --disable servicelb \
+      --disable local-storage \
+      --cluster-cidr=10.42.0.0/16 \
+      --service-cidr=10.43.0.0/16 \
+      --flannel-iface=eth0 \
+      --write-kubeconfig-mode=644
+  when: not k3s_binary.stat.exists
+  args:
+    creates: /usr/local/bin/k3s
+
+- name: Esperar que K3s esté listo
+  ansible.builtin.wait_for:
+    path: /var/lib/rancher/k3s/server/node-token
+    timeout: 120
+
+- name: Leer node-token
+  ansible.builtin.slurp:
+    src: /var/lib/rancher/k3s/server/node-token
+  register: k3s_node_token
+
+- name: Guardar kubeconfig localmente
+  ansible.builtin.fetch:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: "~/.kube/homelab-config"
+    flat: true
+
+- name: Instalar Flux CLI
+  ansible.builtin.shell: |
+    curl -s https://fluxcd.io/install.sh | bash
+  args:
+    creates: /usr/local/bin/flux
+
+- name: Verificar prerequisitos Flux
+  ansible.builtin.command: flux check --pre
+  changed_when: false
+  ignore_errors: true

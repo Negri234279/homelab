@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Homelab App Config",
+  "type": "object",
+  "required": ["app"],
+  "properties": {
+    "app": {
+      "type": "object",
+      "required": ["name", "subdomain", "visibility", "port", "image"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "description": "Nombre único de la app (lowercase, sin espacios)"
+        },
+        "subdomain": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "description": "Subdominio → <subdomain>.negri.es"
+        },
+        "visibility": {
+          "type": "string",
+          "enum": ["private", "public"],
+          "description": "private: solo LAN, public: internet"
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "image": {
+          "type": "object",
+          "required": ["source"],
+          "properties": {
+            "source": {
+              "type": "string",
+              "enum": ["dockerfile", "registry", "ghcr"],
+              "description": "dockerfile: build desde repo, registry: imagen pública, ghcr: GitHub Container Registry"
+            },
+            "dockerfile": {
+              "type": "string",
+              "default": "./Dockerfile"
+            },
+            "registry": {
+              "type": "string",
+              "description": "Imagen completa, ej: nginx:alpine"
+            },
+            "tag_strategy": {
+              "type": "string",
+              "enum": ["semver", "sha", "latest"],
+              "default": "sha"
+            }
+          }
+        },
+        "namespace": {
+          "type": "string",
+          "default": "apps"
+        },
+        "resources": {
+          "type": "object",
+          "properties": {
+            "memory": { "type": "string", "default": "256Mi" },
+            "cpu": { "type": "string", "default": "250m" }
+          }
+        },
+        "volumes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "size", "mountPath"],
+            "properties": {
+              "name": { "type": "string" },
+              "size": { "type": "string" },
+              "mountPath": { "type": "string" }
+            }
+          }
+        },
+        "env": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "value": { "type": "string" },
+              "secretRef": { "type": "string" }
+            }
+          }
+        },
+        "healthcheck": {
+          "type": "object",
+          "properties": {
+            "path": { "type": "string", "default": "/" },
+            "port": { "type": "integer" }
+          }
+        }
+      }
+    }
+  }
+}

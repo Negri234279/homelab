@@ -1,0 +1,32 @@
+# TEMPLATE — sustituir APP_NAME, APP_SUBDOMAIN, APP_PORT, APP_VISIBILITY
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: APP_NAME
+  namespace: APP_NAMESPACE
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.certresolver: "cloudflare"
+    # Para apps PRIVADAS — descomentar:
+    # traefik.ingress.kubernetes.io/router.middlewares: "traefik-private-allowlist@kubernetescrd"
+    # Para apps PÚBLICAS — descomentar:
+    # traefik.ingress.kubernetes.io/router.middlewares: "traefik-secure-headers@kubernetescrd,traefik-rate-limit-public@kubernetescrd"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: APP_SUBDOMAIN.negri.es
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: APP_NAME
+                port:
+                  number: APP_PORT
+  tls:
+    - hosts:
+        - APP_SUBDOMAIN.negri.es
+      secretName: APP_NAME-tls

@@ -1,0 +1,14 @@
+# TEMPLATE — sustituir APP_NAME, VOLUME_NAME, VOLUME_SIZE
+# Solo incluir si la app tiene volúmenes persistentes
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: APP_NAME-VOLUME_NAME
+  namespace: APP_NAMESPACE
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: VOLUME_SIZE

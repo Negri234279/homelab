@@ -1,0 +1,25 @@
+all:
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  children:
+    servers:
+      hosts:
+        rpi5:
+          ansible_host: 192.168.1.7
+          ansible_user: pi
+          k3s_role: server
+          node_labels:
+            - "node-role.kubernetes.io/master=true"
+            - "storage=local"
+
+    workers:
+      hosts:
+        rpi3:                             # Descomentar cuando esté disponible
+          ansible_host: 192.168.1.6
+          ansible_user: pi
+          k3s_role: agent
+          k3s_server_url: https://192.168.1.7:6443
+          node_labels:
+            - "role=backup"
+            - "storage=backup"

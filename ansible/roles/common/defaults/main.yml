@@ -1,0 +1,6 @@
+---
+common_timezone: "Europe/Madrid"
+common_locale: "es_ES.UTF-8"
+common_ssh_port: 22
+common_allowed_ssh_users:
+  - pi

@@ -1,0 +1,5 @@
+---
+k3s_version: "v1.31.0+k3s1"    # TODO: actualizar a versión estable más reciente
+k3s_config_dir: /etc/rancher/k3s
+flux_github_repo: "<<TU_USUARIO>>/homelab"
+flux_github_branch: main

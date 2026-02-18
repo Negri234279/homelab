@@ -1,0 +1,33 @@
+# Terraform
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/*.tfvars
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/plan.txt
+
+# Secrets locales
+pub-sealed-secrets.pem
+*.env
+.env.*
+!.env.example
+
+# K3s kubeconfig local
+kubeconfig
+*.kubeconfig
+
+# Ansible
+ansible/*.retry
+ansible/.vault_pass
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/settings.json
+
+# Logs
+*.log
+
+*tmpclaude*

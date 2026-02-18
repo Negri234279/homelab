@@ -1,0 +1,3 @@
+---
+# TODO: Implementar instalación de K3s agent
+# Usar el token proporcionado en k3s_server_token

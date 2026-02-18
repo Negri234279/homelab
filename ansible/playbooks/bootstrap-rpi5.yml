@@ -1,0 +1,29 @@
+---
+- name: Bootstrap RPi5 — Server Node
+  hosts: rpi5
+  become: true
+  gather_facts: true
+
+  pre_tasks:
+    - name: Verify OS is Raspberry Pi OS (Debian-based)
+      ansible.builtin.assert:
+        that: ansible_os_family == "Debian"
+        fail_msg: "Este playbook requiere Debian/Raspberry Pi OS"
+
+  roles:
+    - role: common
+      tags: [common]
+    - role: k3s-server
+      tags: [k3s]
+    - role: pihole
+      tags: [pihole]
+
+  post_tasks:
+    - name: Mostrar info del cluster
+      ansible.builtin.command: kubectl get nodes
+      register: nodes_output
+      changed_when: false
+
+    - name: Print nodes
+      ansible.builtin.debug:
+        msg: "{{ nodes_output.stdout_lines }}"

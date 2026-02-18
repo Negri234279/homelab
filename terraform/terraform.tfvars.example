@@ -1,0 +1,9 @@
+# Copiar a terraform.tfvars y rellenar valores reales
+# NUNCA commitear terraform.tfvars al repo
+
+cloudflare_api_token = "<<TU_CF_API_TOKEN>>"
+cloudflare_zone_id   = "<<TU_ZONE_ID>>"
+rpi5_public_ip       = "<<TU_IP_PUBLICA>>"
+rpi5_local_ip        = "192.168.1.7"
+pihole_host          = "pi@192.168.1.7"
+pihole_ssh_key       = "~/.ssh/homelab_rsa"

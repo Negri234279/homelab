@@ -1,0 +1,36 @@
+# TEMPLATE — sustituir APP_NAME, APP_IMAGE, APP_PORT, APP_NAMESPACE
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: APP_NAME
+  namespace: APP_NAMESPACE
+  labels:
+    app: APP_NAME
+    managed-by: homelab-scripts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: APP_NAME
+  template:
+    metadata:
+      labels:
+        app: APP_NAME
+    spec:
+      containers:
+        - name: APP_NAME
+          image: APP_IMAGE
+          ports:
+            - containerPort: APP_PORT
+              protocol: TCP
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "APP_MEMORY_LIMIT"
+          env: []          # Rellenar según homelab.yaml
+          volumeMounts: [] # Rellenar si tiene volúmenes
+      volumes: []          # Rellenar si tiene volúmenes
+      securityContext:
+        runAsNonRoot: true

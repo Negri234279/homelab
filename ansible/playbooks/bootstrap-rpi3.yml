@@ -1,0 +1,18 @@
+---
+- name: Bootstrap RPi3 — Worker Node (Backup)
+  hosts: rpi3
+  become: true
+  gather_facts: true
+
+  vars_prompt:
+    - name: k3s_token
+      prompt: "Token K3s del servidor (cat /var/lib/rancher/k3s/server/node-token en rpi5)"
+      private: true
+
+  roles:
+    - role: common
+      tags: [common]
+    - role: k3s-agent
+      tags: [k3s]
+      vars:
+        k3s_server_token: "{{ k3s_token }}"

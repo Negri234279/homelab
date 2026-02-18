@@ -1,0 +1,7 @@
+---
+pihole_local_ip: "192.168.1.7"
+pihole_web_password: "<<CAMBIAR_EN_VAULT>>"
+pihole_dns_upstream_1: "1.1.1.1"
+pihole_dns_upstream_2: "8.8.8.8"
+pihole_domain: "lan"
+pihole_rev_server: false

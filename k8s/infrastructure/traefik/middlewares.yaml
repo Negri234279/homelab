@@ -1,0 +1,41 @@
+---
+# Middleware: solo acceso desde red local y VPN
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: private-allowlist
+  namespace: traefik
+spec:
+  ipAllowList:
+    sourceRange:
+      - "192.168.1.0/24"          # Red local
+      - "127.0.0.1/32"
+      - "::1/128"
+---
+# Middleware: headers de seguridad para apps públicas
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: secure-headers
+  namespace: traefik
+spec:
+  headers:
+    browserXssFilter: true
+    contentTypeNosniff: true
+    forceSTSHeader: true
+    stsIncludeSubdomains: true
+    stsPreload: true
+    stsSeconds: 31536000
+    customFrameOptionsValue: "SAMEORIGIN"
+    referrerPolicy: "strict-origin-when-cross-origin"
+---
+# Middleware: rate limiting para apps públicas
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: rate-limit-public
+  namespace: traefik
+spec:
+  rateLimit:
+    average: 100
+    burst: 50
