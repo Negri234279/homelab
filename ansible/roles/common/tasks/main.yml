@@ -50,13 +50,3 @@
   ansible.builtin.apt:
     name: fail2ban
     state: present
-
-handlers:
-  - name: Reiniciar SSH
-    ansible.builtin.service:
-      name: ssh
-      state: restarted
-
-  - name: Reiniciar sistema
-    ansible.builtin.reboot:
-      reboot_timeout: 300
