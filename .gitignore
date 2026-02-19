@@ -20,6 +20,9 @@ kubeconfig
 ansible/*.retry
 ansible/.vault_pass
 
+# Setup local (no sensible, pero es específico de la máquina)
+.setup.env
+
 # OS
 .DS_Store
 Thumbs.db
